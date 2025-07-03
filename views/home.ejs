@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Route Shield - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-yellow-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-gray-800 px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="flex items-center space-x-4">
+      <!-- <img src="./images/Screenshot 2025-04-08 044423.png" alt="NIT Bhopal Logo" class="h-10 object-contain"> -->
+      <span class="text-2xl font-bold text-yellow-400">Route Shield</span>
+    </div>
+    <div class="space-x-4">
+      <form action="/loginUser" method="GET" class="inline">
+        <button class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-md font-semibold">Login as User</button>
+      </form>
+      <form action="/loginEngineer" method="GET" class="inline">
+        <button class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-md font-semibold">Login as Engineer</button>
+      </form>
+      <form action="/signup" method="GET" class="inline">
+        <button class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-md font-semibold">Sign Up</button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- Intro box -->
+  <div class="bg-gray-800 text-yellow-100 max-w-4xl mx-auto mt-16 p-10 rounded-xl shadow-lg">
+    <h1 class="text-4xl font-bold text-yellow-400 mb-6 text-center">Welcome to Route Shield</h1>
+    <p class="text-lg mb-4">
+      Our <span class="text-yellow-300 font-semibold">accident detection and alert system</span> helps you navigate safely by showing <strong>accident-prone areas</strong> between your current location and destination.
+    </p>
+    <p class="text-lg mb-4">
+      In recent years, road accidents have significantly increased. Our system alerts you about <span class="text-yellow-300 font-semibold">accident zones within 1 km</span> of your route to help reduce risks and ensure safety.
+    </p>
+    <p class="text-lg font-semibold text-yellow-300 text-center">Stay Alert. Stay Safe. Travel Smart.</p>
+  </div>
+
+  <!-- Road Safety Images -->
+  <div class="flex justify-center gap-10 flex-wrap py-16">
+    <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/UK_traffic_609.svg/1200px-UK_traffic_609.svg.png" class="h-24" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Indian-road-sign-warning-dangerous-curve-left.svg/1024px-Indian-road-sign-warning-dangerous-curve-left.svg.png" class="h-24" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Indian-road-sign-warning-school-ahead.svg/1024px-Indian-road-sign-warning-school-ahead.svg.png" class="h-24" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Indian-road-sign-warning-accident-prone-area.svg/1024px-Indian-road-sign-warning-accident-prone-area.svg.png" class="h-24" /> -->
+  </div>
+
+</body>
+</html>
+

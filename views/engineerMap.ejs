@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Accident Alert Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    function getSeverityIcon(count) {
+      if (count <= 7) return { color: 'green', message: '⚠️ Minor Risk' };
+      else if (count <= 15) return { color: 'orange', message: '🚧 Moderate Risk' };
+      else return { color: 'red', message: '🚨 High Risk!' };
+    }
+
+    function getColoredIcon(color) {
+      return new L.Icon({
+        iconUrl: `images/marker-icon-${color}.png`, // Ensure these images exist
+        shadowUrl: 'images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+    }
+
+    function createColoredMarker(map, lat, lon, color, popupText) {
+      const icon = getColoredIcon(color);
+      L.marker([lat, lon], { icon }).addTo(map).bindPopup(popupText);
+    }
+
+    const accidentSpots = [
+      { name: "Politechnic Chauraha Bhopal", lat: 23.24463192235976, lon:  77.397200926389, count: 18, reason: "High traffic congestion and frequent red-light jumping", },
+      { name: "Karond Chauraha Bhopal", lat: 23.302773806024167, lon:  77.4044550364494, count: 8,  reason: "Heavy market area leading to pedestrian crossings", },
+      { name: "Koh-e-Fiza (Balaghat Chauraha) Bhopal", lat:  23.259933,  lon: 77.412613, count: 7, reason: "Sharp turns and poor visibility at night", 
+    },
+      { name: "Misrod (Near Danish Nagar)", lat: 23.1663, lon: 77.4666, count: 5,  reason: "Speeding vehicles and lack of speed breakers", 
+    },
+      { name: "JP Nagar", lat: 23.2737, lon: 77.4083, count: 5,  reason: "Narrow roads with mixed traffic (two-wheelers, cars, rickshaws)", 
+    },
+      { name: "Bhanpur Bypass, Chhola", lat: 23.2951, lon: 77.4265, count: 26,  reason: "High-speed bypass with poor enforcement of traffic rules", 
+    },
+      { name: "Lalghati Square", lat: 23.2875, lon: 77.4042, count: 25, reason: "Crowded intersection and signal jumping", 
+    },
+      { name: "Near Chetak Bridge", lat: 23.2563, lon: 77.4351, count: 23, reason: "Merging traffic from multiple directions without proper lanes", },
+      { name: "11 Meel, Misrod", lat: 23.1775, lon: 77.4532, count: 23, reason: "High-speed highway zone with frequent overtaking", 
+    },
+      { name: "Ratnagiri Square", lat: 23.2590, lon: 77.4600, count: 20,  reason: "Roadside encroachments and pedestrian crossings", },
+       { name: "Anand Nagar", lat: 23.2595, lon: 77.4820, count: 16 , reason: "Lack of proper street lighting and sudden turns", },
+      { name: "Ayodhya Bypass", lat: 23.2856, lon: 77.4632, count: 13, reason: "Speeding and reckless driving on the bypass", 
+    },
+      { name: "Sihore Bypass", lat: 23.1985, lon: 77.4312, count: 11, reason: "Poorly maintained road surface causing accidents",  },
+      { name: "11 Mill Road", lat: 23.2456, lon: 77.4550, count: 6, reason: "Congested narrow road with unauthorized parking" },
+      { name: "In front of Chirayu Hospital", lat: 23.2700, lon: 77.4000, count: 2,reason: "Careless U-turns and hospital traffic", 
+    },
+    
+  {
+    name: "DB Mall Junction",
+    lat: 23.233597,
+    lon: 77.430181,
+    count: 16,
+    reason: "High traffic volume, signal jumping, and pedestrian congestion near the mall entrance"
+  },
+  {
+    name: "Roshanpura Square",
+    lat: 23.237856384694044,
+    lon: 77.40107579200011,
+    count: 14,
+    reason: "Complex junction with mixed traffic, poor lane discipline, and frequent signal violations"
+  },
+  {
+    name: "Mandakini Main Road",
+    lat: 23.2456,
+    lon: 77.4098,
+    count: 9,
+    reason: "Speeding vehicles on straight road stretch, poor visibility at turns, and lack of proper signage"
+  },
+  {
+    name: "Railway Crossing",
+    lat: 23.1867,
+    lon: 77.3803,
+    count: 7,
+    reason: "Gate jumping, lack of synchronization between road and rail signals, and absence of speed calming measures"
+  },
+  {
+    name: "AIIMS Gate",
+    lat: 23.2113,
+    lon: 77.4560,
+    count: 3,
+    reason: "Sudden stops due to patient drop-offs, jaywalking by pedestrians, and poor traffic regulation"
+  },
+  {
+    name: "Misrod Crossing",
+    lat: 23.17280586072352,
+    lon:  77.45538139569994,
+    count: 2,
+    reason: "Improper lane merging, insufficient lighting at night, and inattentive driving at the bypass"
+  },
+  
+  {
+    "name": "Kolar Main Highway",
+    "lat": 23.240950,
+    "lon": 77.397560,
+    "count": 25,
+    "reason": "Expressway-level speeding",
+    "severity": "High"
+  },
+  {
+    "name": "VIP Road View Point",
+    "lat": 23.260863,
+    "lon": 77.380662,
+    "count": 21,
+    "reason": "Over-speed by youth",
+    "severity": "High"
+  },
+  {
+    "name": "Gandhi Nagar Main Road",
+    "lat": 23.307236,
+    "lon": 77.358510,
+    "count": 21,
+    "reason": "Speeding heavy vehicles",
+    "severity": "High"
+  },
+  {
+    "name": "Industrial Area Gate",
+    "lat": 23.264046,
+    "lon": 77.447476,
+    "count": 20,
+    "reason": "Heavy vehicle collision",
+    "severity": "High"
+  },
+  {
+    "name": "Bairagarh Crossing",
+    "lat": 23.270647,
+    "lon": 77.335375,
+    "count": 19,
+    "reason": "Signal disobedience",
+    "severity": "High"
+  },
+  {
+    "name": "Chola Mandir",
+    "lat": 23.287213,
+    "lon": 77.421889,
+    "count": 19,
+    "reason": "Crowd rush at temple fairs",
+    "severity": "High"
+  },
+  {
+    "name": "Aishbagh Railway Gate",
+    "lat": 23.259933,
+    "lon": 77.412613,
+    "count": 18,
+    "reason": "Crossing track illegally",
+    "severity": "High"
+  },
+  {
+    "name": "Hoshangabad Road Crossing",
+    "lat": 23.159743,
+    "lon": 77.471041,
+    "count": 18,
+    "reason": "NH traffic merging",
+    "severity": "High"
+  },
+  {
+    "name": "Gautam Nagar Square",
+    "lat": 23.234738,
+    "lon": 77.441275,
+    "count": 18,
+    "reason": "Speeding bikes",
+    "severity": "High"
+  },
+  {
+    "name": "Aura Mall Intersection",
+    "lat": 23.259933,
+    "lon": 77.412615,
+    "count": 17,
+    "reason": "Speeding",
+    "severity": "High"
+  },
+  {
+    name: "Near Taj Mahal Palace",
+    lat: 23.250000,
+    lon: 77.416700,
+    count: 17,
+    reason: "Drunk driving",
+    severity: "High"
+  },
+  {
+    name: "Awadhpuri Main Square",
+    lat: 23.270000,
+    lon: 77.470000,
+    count: 16,
+    reason: "Reckless driving",
+    severity: "High"
+  },
+  {
+    name: "Talia Main Junction",
+    lat: 23.260000,
+    lon: 77.420000,
+    count: 16,
+    reason: "Wrong lane entry",
+    severity: "High"
+  },
+  {
+    name: "NISAT Crossing",
+    lat: 23.280000,
+    lon: 77.430000,
+    count: 16,
+    reason: "Overspeeding at market zone",
+    severity: "High"
+  },
+  {
+    name: "Bhopal Junction Gate",
+    lat: 23.260000,
+    lon: 77.400000,
+    count: 15,
+    reason: "Pedestrian hit",
+    severity: "High"
+  },
+  {
+    name: "Piplani Chowk",
+    lat: 23.250000,
+    lon: 77.470000,
+    count: 15,
+    reason: "Red light jumping",
+    severity: "High"
+  },
+  {
+    name: "Bagsewania Main Road",
+    lat: 23.230000,
+    lon: 77.460000,
+    count: 15,
+    reason: "Poor traffic control",
+    severity: "High"
+  },
+  {
+    name: "Tilajamalpura Industrial Area",
+    lat: 23.270000,
+    lon: 77.460000,
+    count: 15,
+    reason: "Heavy vehicle speeding",
+    severity: "High"
+  }
+
+
+
+
+
+    ];
+
+    function initMap() {
+      const map = L.map('map').setView([23.2599, 77.4126], 12); // Centered on Bhopal
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      accidentSpots.forEach(spot => {
+        const { message, color } = getSeverityIcon(spot.count);
+        createColoredMarker(
+          map,
+          spot.lat,
+          spot.lon,
+          color,
+          `${message}<br><strong>${spot.name}</strong><br>Accidents: ${spot.count}<br>Reason: ${spot.reason}`,
+          ``
+        );
+      });
+    }
+
+    window.onload = initMap;
+  </script>
+</body>
+</html>
