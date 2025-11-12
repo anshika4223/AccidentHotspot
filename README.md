@@ -45,7 +45,6 @@ This project helps users:
 |--------|-------------|
 | **Frontend** | Reactjs, JavaScript, Bootstrap, Leaflet.js, FontAwesome |
 | **Backend** | Node.js, Express.js |
-| **Database** | MongoDB (via Mongoose) |
 | **APIs** | OpenStreetMap Nominatim API (for geocoding) |
 
 ---
