@@ -49,5 +49,4 @@ This project helps users:
 
 ---
 
-## 📁 Folder Structure
 
